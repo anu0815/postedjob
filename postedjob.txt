@@ -1,0 +1,48 @@
+import { Component, OnInit, Input } from '@angular/core';
+import { Postedjob } from '../postedjob';
+import { ProfileService } from '../profile.service';
+import { PostedjobListComponent } from '../postedjob-list/postedjob-list.component';
+
+@Component({
+  selector: 'postedjob-details',
+  templateUrl: './postedjob-details.component.html',
+  styleUrls: ['./postedjob-details.component.css']
+})
+export class PostedjobDetailsComponent implements OnInit {
+
+  @Input() postedjob: Postedjob;
+
+  constructor(private profileService: ProfileService, private postedjobListComponent: PostedjobListComponent) { }
+
+ ngOnInit() {
+  }
+
+  updateActive() {
+    this.profileService.updatepostedjob(this.postedjob.id,
+      {
+        jobrole: this.postedjob.jobrole, descriptions: this.postedjob.descriptions, keyskill: this.postedjob.keyskill, ctc: this.postedjob.ctc, experience: this.postedjob.experience,
+        noofpositions: this.postedjob.noofpositions, location: this.postedjob.location, jobindustry: this.postedjob.jobindustry, functionalarea: this.postedjob.functionalarea,
+        qualifications: this.postedjob.qualifications, totalexperience: this.postedjob.totalexperience, relevantexperience: this.postedjob.relevantexperience,
+        genderpreference: this.postedjob.genderpreference, responsethrough: this.postedjob.responsethrough, mailingemailid: this.postedjob.mailingemailid,
+        contactperson: this.postedjob.contactperson, contactno: this.postedjob.contactno, address: this.postedjob.address, active: this.postedjob.active
+      })
+      .subscribe(
+        data => {
+          console.log(data);
+          this.postedjob = data as Postedjob;
+        },
+        error => console.log(error));
+  }
+  deletePostedjobs() {
+    this.profileService.deletePostedjobs(this.postedjob.id)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.postedjobListComponent.reloadData();
+        },
+        error => console.log(error));
+  }
+  reloadData(): any {
+    throw new Error("Method not implemented.");
+  }
+}
